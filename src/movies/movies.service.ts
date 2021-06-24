@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Movie } from './entities/movie.entity';
-import { CreateMovieDto } from './dto/create-movie-dto';
+import { CreateMovieDto } from './dto/create-movie.dto';
+import { UpdateMovieDto } from './dto/update-movie.dto';
 
 @Injectable()
 export class MoviesService {
@@ -33,7 +34,7 @@ export class MoviesService {
     return newMovie;
   }
 
-  update(id: number, movieData) {
+  update(id: number, movieData: UpdateMovieDto) {
     const movie = this.getOne(id);
     const movieIndex = this.movies.indexOf(movie);
     this.movies[movieIndex] = { ...movie, ...movieData };
