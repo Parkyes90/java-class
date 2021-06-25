@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MoviesService } from './movies.service';
-import { NotFoundException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 
 describe('MoviesService', () => {
   let service: MoviesService;
@@ -42,6 +42,42 @@ describe('MoviesService', () => {
         expect(e).toBeInstanceOf(NotFoundException);
         expect(e.message).toEqual('Movie with Id');
       }
+    });
+  });
+
+  describe('deleteOne', () => {
+    it('deletes a movie', () => {
+      const createdMovie = service.create({
+        title: 'Test M',
+        genres: ['test'],
+        year: 2000,
+      });
+      const movies = service.getAll();
+      service.deleteOne(createdMovie.id);
+      const afterDeleteMovies = service.getAll();
+
+      expect(afterDeleteMovies.length).toEqual(movies.length - 1);
+    });
+  });
+  it('should throw 404 error', () => {
+    try {
+      service.deleteOne(1234);
+    } catch (e) {
+      expect(e).toBeInstanceOf(NotFoundException);
+      expect(e.message).toEqual('Movie with Id');
+    }
+  });
+
+  describe('create', () => {
+    it('should create a movie', () => {
+      const moviesLength = service.getAll().length;
+      service.create({
+        title: 'Test M',
+        genres: ['test'],
+        year: 2000,
+      });
+      const afterCreateMoviesLength = service.getAll().length;
+      expect(afterCreateMoviesLength).toEqual(moviesLength + 1);
     });
   });
 });
