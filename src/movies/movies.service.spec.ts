@@ -80,4 +80,27 @@ describe('MoviesService', () => {
       expect(afterCreateMoviesLength).toEqual(moviesLength + 1);
     });
   });
+
+  describe('update', () => {
+    it('should update a movie', () => {
+      const createdMovie = service.create({
+        title: 'Test Create',
+        genres: ['test'],
+        year: 2012,
+      });
+      service.update(createdMovie.id, {
+        year: 2013,
+      });
+      const updatedMovie = service.getOne(createdMovie.id);
+      expect(updatedMovie.year).toEqual(2013);
+    });
+  });
+  it('should throw 404 error', () => {
+    try {
+      service.getOne(1234);
+    } catch (e) {
+      expect(e).toBeInstanceOf(NotFoundException);
+      expect(e.message).toEqual('Movie with Id');
+    }
+  });
 });
