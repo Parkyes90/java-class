@@ -44,6 +44,16 @@ describe('AppController (e2e)', () => {
         })
         .expect(201);
     });
+    it('POST 400', () => {
+      return request(app.getHttpServer())
+        .post('/movies')
+        .send({
+          title: 'TEST',
+          year: 'not valid year',
+          genres: ['test'],
+        })
+        .expect(400);
+    });
 
     it('DELETE', () => {
       return request(app.getHttpServer()).delete('/movies/23124').expect(404);
@@ -54,7 +64,18 @@ describe('AppController (e2e)', () => {
     it('GET', () => {
       return request(app.getHttpServer()).get('/movies/1').expect(200);
     });
-    it.todo('DELETE');
-    it.todo('UPDATE');
+    it('GET 404', () => {
+      return request(app.getHttpServer()).get('/movies/999').expect(404);
+    });
+    it('PATCH', () => {
+      return request(app.getHttpServer())
+        .patch('/movies/1')
+        .send({ year: 1999 })
+        .expect(200);
+    });
+
+    it('DELETE', () => {
+      return request(app.getHttpServer()).delete('/movies/1').expect(200);
+    });
   });
 });
