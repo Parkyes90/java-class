@@ -1,9 +1,15 @@
-import { Resolver, Query } from '@nestjs/graphql';
+import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
+import { Restaurant } from './entities/restaurants.entity';
+import { CreateRestaurantDto } from './dtos/create-restaurant.dto';
 
-@Resolver()
+@Resolver(() => Restaurant)
 export class RestaurantsResolver {
-  @Query(() => Boolean)
-  isGood() {
+  @Query(() => [Restaurant])
+  restaurants(@Args('veganOnly') veganOnly: boolean): Restaurant[] {
+    return [];
+  }
+  @Mutation(() => Boolean)
+  createRestaurant(@Args() createRestaurantDto: CreateRestaurantDto): boolean {
     return true;
   }
 }
