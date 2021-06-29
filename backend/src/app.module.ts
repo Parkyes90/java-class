@@ -11,11 +11,12 @@ import { ConfigModule } from '@nestjs/config';
       isGlobal: true,
       envFilePath:
         process.env.NODE_ENV === 'dev' ? 'envs/.dev.env' : 'envs/.spec.env',
+      ignoreEnvFile: process.env.NODE_ENV === 'prod',
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.PG_HOST,
-      port: parseInt(process.env.PG_PORT),
+      port: +process.env.PG_PORT,
       username: process.env.PG_USER,
       database: process.env.PG_DATABASE,
       password: process.env.PG_PASSWORD,
