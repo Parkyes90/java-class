@@ -3,6 +3,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RestaurantsModule } from './restaurants/restaurants.module';
 import { ConfigModule } from '@nestjs/config';
+import * as Joi from 'joi';
 
 @Module({
   imports: [
@@ -12,6 +13,14 @@ import { ConfigModule } from '@nestjs/config';
       envFilePath:
         process.env.NODE_ENV === 'dev' ? 'envs/.dev.env' : 'envs/.spec.env',
       ignoreEnvFile: process.env.NODE_ENV === 'prod',
+      validationSchema: Joi.object({
+        NODE_ENV: Joi.string().valid('dev', 'prod'),
+        PG_HOST: Joi.string().required(),
+        PG_PORT: Joi.string().required(),
+        PG_USER: Joi.string().required(),
+        PG_DATABASE: Joi.string().required(),
+        PG_PASSWORD: Joi.string().required(),
+      }),
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
