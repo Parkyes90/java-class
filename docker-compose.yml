@@ -19,3 +19,5 @@ services:
       - PG_DATABASE=postgres
       - PG_PASSWORD=password
       - PG_PORT=5432
+    ports:
+    - "3000:3000"
