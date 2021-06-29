@@ -2,10 +2,16 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RestaurantsModule } from './restaurants/restaurants.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
     RestaurantsModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath:
+        process.env.NODE_ENV === 'dev' ? 'envs/.dev.env' : 'envs/.spec.env',
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.PG_HOST,

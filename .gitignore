@@ -184,3 +184,5 @@ dist
 
 # yarn v2
 
+*/envs/*
+db
