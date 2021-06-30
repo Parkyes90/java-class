@@ -10,8 +10,14 @@ export class RestaurantsResolver {
   restaurants(): Promise<Restaurant[]> {
     return this.restaurantService.getAll();
   }
-  @Mutation(() => Boolean)
-  createRestaurant(@Args() createRestaurantDto: CreateRestaurantDto): boolean {
-    return true;
+  @Mutation(() => Restaurant)
+  async createRestaurant(
+    @Args() createRestaurantDto: CreateRestaurantDto,
+  ): Promise<Restaurant> {
+    try {
+      return await this.restaurantService.createRestaurant(createRestaurantDto);
+    } catch (e) {
+      throw e;
+    }
   }
 }
