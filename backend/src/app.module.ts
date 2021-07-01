@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { RestaurantsModule } from './restaurants/restaurants.module';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
-import { Restaurant } from './restaurants/entities/restaurants.entity';
+import { Restaurant } from './restaurants/entities/restaurant.entity';
 
 @Module({
   imports: [

@@ -5,6 +5,8 @@ services:
     image: 'postgres:latest'
     environment:
       - POSTGRES_PASSWORD=password
+    ports:
+    - "5555:5432"
   api:
     depends_on:
       - postgres
@@ -16,7 +18,7 @@ services:
     environment:
       - PG_USER=postgres
       - PG_HOST=postgres
-      - PG_DATABASE=postgres
+      - PG_DATABASE=delicious
       - PG_PASSWORD=password
       - PG_PORT=5432
     ports:
