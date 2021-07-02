@@ -4,6 +4,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 import { UsersModule } from './users/users.module';
+import { CoreModule } from './core/core.module';
+import { User } from './users/entities/user.entity';
 
 @Module({
   imports: [
@@ -30,12 +32,13 @@ import { UsersModule } from './users/users.module';
       password: process.env.PG_PASSWORD,
       logging: true,
       synchronize: process.env.NODE_ENV !== 'prod',
-      entities: [],
+      entities: [User],
     }),
     GraphQLModule.forRoot({
       autoSchemaFile: true,
     }),
     UsersModule,
+    CoreModule,
   ],
   controllers: [],
   providers: [],
