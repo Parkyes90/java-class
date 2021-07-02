@@ -1,14 +1,12 @@
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { RestaurantsModule } from './restaurants/restaurants.module';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
-import { Restaurant } from './restaurants/entities/restaurant.entity';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
-    RestaurantsModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath:
@@ -32,11 +30,12 @@ import { Restaurant } from './restaurants/entities/restaurant.entity';
       password: process.env.PG_PASSWORD,
       logging: true,
       synchronize: process.env.NODE_ENV !== 'prod',
-      entities: [Restaurant],
+      entities: [],
     }),
     GraphQLModule.forRoot({
       autoSchemaFile: true,
     }),
+    UsersModule,
   ],
   controllers: [],
   providers: [],
