@@ -7,13 +7,13 @@ import {
   registerEnumType,
 } from '@nestjs/graphql';
 
-export enum USER_ROLE {
-  CLIENT = 'client',
-  OWNER = 'owner',
-  DELIVERY = 'delivery',
+export enum UserRole {
+  Client,
+  Owner,
+  Delivery,
 }
 
-registerEnumType(USER_ROLE, { name: 'USER_ROLE' });
+registerEnumType(UserRole, { name: 'UserRole' });
 
 @InputType({ isAbstract: true })
 @ObjectType()
@@ -28,10 +28,10 @@ export class User extends CoreEntity {
   password: string;
 
   @Column({
-    enum: USER_ROLE,
-    default: USER_ROLE.CLIENT,
+    enum: UserRole,
+    default: UserRole.Client,
     type: 'enum',
   })
-  @Field(() => USER_ROLE)
-  role: USER_ROLE;
+  @Field(() => UserRole)
+  role: UserRole;
 }
