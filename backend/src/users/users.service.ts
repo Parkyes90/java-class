@@ -14,15 +14,16 @@ export class UsersService {
     email,
     password,
     role,
-  }: CreateAccountInput): Promise<string | undefined> {
+  }: CreateAccountInput): Promise<[boolean, string?]> {
     try {
       const exists = await this.users.findOne({ email });
       if (exists) {
-        return '이미 같은 이메일을 가진 사용자가 있습니다.';
+        return [false, '이미 이 이메일을 사용하고 있는 사용자가 있습니다.'];
       }
       await this.users.save(this.users.create({ email, password, role }));
+      return [true];
     } catch (e) {
-      throw e;
+      return [false, e.message];
     }
   }
 }
