@@ -2,7 +2,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { Injectable, BadRequestException } from '@nestjs/common';
-import { CreateAccountInput } from './dtos/create-account.dto';
+import {
+  CreateAccountInput,
+  CreateAccountOutput,
+} from './dtos/create-account.dto';
+import { LoginInput, LoginOutput } from './dtos/login.dto';
 
 @Injectable()
 export class UsersService {
@@ -14,16 +18,53 @@ export class UsersService {
     email,
     password,
     role,
-  }: CreateAccountInput): Promise<[boolean, string?]> {
+  }: CreateAccountInput): Promise<CreateAccountOutput> {
     try {
-      const exists = await this.users.findOne({ email });
-      if (exists) {
-        return [false, '이미 이 이메일을 사용하고 있는 사용자가 있습니다.'];
+      const user = await this.users.findOne({ email });
+      if (user) {
+        return {
+          ok: false,
+          error: '이미 이 이메일을 사용하고 있는 사용자가 있습니다.',
+        };
       }
       await this.users.save(this.users.create({ email, password, role }));
-      return [true];
-    } catch (e) {
-      return [false, e.message];
+      return {
+        ok: true,
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        error,
+      };
+    }
+  }
+  async login({ email, password }: LoginInput): Promise<LoginOutput> {
+    try {
+      const user = await this.users.findOne({ email });
+      const notValidOutput = {
+        ok: false,
+        error: '사용자 ID 혹은 비밀번호가 잘못됐습니다.',
+      };
+
+      if (!user) {
+        return notValidOutput;
+      }
+
+      const isCorrectPassword = await user.checkPassword(password);
+
+      if (!isCorrectPassword) {
+        return notValidOutput;
+      }
+
+      return {
+        ok: true,
+        token: '123',
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        error: error,
+      };
     }
   }
 }
