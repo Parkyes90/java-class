@@ -21,6 +21,6 @@ services:
       - PG_DATABASE=postgres
       - PG_PASSWORD=password
       - PG_PORT=5432
-      - SECRET_KEY=A0m883cHgSUwzc6AaE3RrIWy6gZP1vtq
+      - PRIVATE_KEY=A0m883cHgSUwzc6AaE3RrIWy6gZP1vtq
     ports:
     - "3000:3000"
