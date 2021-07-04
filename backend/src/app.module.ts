@@ -6,6 +6,7 @@ import * as Joi from 'joi';
 import { UsersModule } from './users/users.module';
 import { CoreModule } from './core/core.module';
 import { User } from './users/entities/user.entity';
+import { TokensModule } from './tokens/tokens.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { User } from './users/entities/user.entity';
     }),
     UsersModule,
     CoreModule,
+    TokensModule,
   ],
   controllers: [],
   providers: [],
