@@ -21,6 +21,7 @@ import { User } from './users/entities/user.entity';
         PG_USER: Joi.string().required(),
         PG_DATABASE: Joi.string().required(),
         PG_PASSWORD: Joi.string().required(),
+        SECRET_KEY: Joi.string().required(),
       }),
     }),
     TypeOrmModule.forRoot({
