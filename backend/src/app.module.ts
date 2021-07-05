@@ -13,6 +13,7 @@ import { CoreModule } from './core/core.module';
 import { User } from './users/entities/user.entity';
 import { TokensModule } from './tokens/tokens.module';
 import { TokensMiddleware } from './tokens/tokens.middleware';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -51,6 +52,7 @@ import { TokensMiddleware } from './tokens/tokens.middleware';
     TokensModule.forRoot({
       privateKey: process.env.PRIVATE_KEY,
     }),
+    AuthModule,
   ],
   controllers: [],
   providers: [],
