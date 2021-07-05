@@ -44,6 +44,7 @@ import { TokensMiddleware } from './tokens/tokens.middleware';
     }),
     GraphQLModule.forRoot({
       autoSchemaFile: true,
+      context: ({ req }) => ({ user: req['user'] }),
     }),
     UsersModule,
     CoreModule,
