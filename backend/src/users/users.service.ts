@@ -9,6 +9,7 @@ import {
 import { LoginInput, LoginOutput } from './dtos/login.dto';
 import { ConfigService } from '@nestjs/config';
 import { TokensService } from '../tokens/tokens.service';
+import { EditProfileInput } from './dtos/edit-profile.dto';
 
 @Injectable()
 export class UsersService {
@@ -79,5 +80,13 @@ export class UsersService {
       throw new NotFoundException('error');
     }
     return user;
+  }
+
+  async editProfile(userId: number, editProfileInput: EditProfileInput) {
+    const user = await this.users.findOne(userId);
+    Object.keys(editProfileInput).forEach((key) => {
+      user[key] = editProfileInput[key];
+    });
+    return this.users.save(user);
   }
 }
