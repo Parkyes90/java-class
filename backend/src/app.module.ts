@@ -14,6 +14,7 @@ import { User } from './users/entities/user.entity';
 import { TokensModule } from './tokens/tokens.module';
 import { TokensMiddleware } from './tokens/tokens.middleware';
 import { AuthModule } from './auth/auth.module';
+import { Verification } from './users/entities/verification.entity';
 
 @Module({
   imports: [
@@ -41,7 +42,7 @@ import { AuthModule } from './auth/auth.module';
       password: process.env.PG_PASSWORD,
       logging: true,
       synchronize: process.env.NODE_ENV !== 'prod',
-      entities: [User],
+      entities: [User, Verification],
     }),
     GraphQLModule.forRoot({
       autoSchemaFile: true,
