@@ -10,11 +10,14 @@ import { LoginInput, LoginOutput } from './dtos/login.dto';
 import { ConfigService } from '@nestjs/config';
 import { TokensService } from '../tokens/tokens.service';
 import { EditProfileInput } from './dtos/edit-profile.dto';
+import { Verification } from './entities/verification.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User) private readonly users: Repository<User>,
+    @InjectRepository(Verification)
+    private readonly verifications: Repository<Verification>,
     private readonly config: ConfigService,
     private readonly tokensService: TokensService,
   ) {}
@@ -25,14 +28,21 @@ export class UsersService {
     role,
   }: CreateAccountInput): Promise<CreateAccountOutput> {
     try {
-      const user = await this.users.findOne({ email });
-      if (user) {
+      const existUser = await this.users.findOne({ email });
+      if (existUser) {
         return {
           ok: false,
           error: '이미 이 이메일을 사용하고 있는 사용자가 있습니다.',
         };
       }
-      await this.users.save(this.users.create({ email, password, role }));
+      const user = await this.users.save(
+        this.users.create({ email, password, role }),
+      );
+      await this.verifications.save(
+        this.verifications.create({
+          user,
+        }),
+      );
       return {
         ok: true,
       };
@@ -84,9 +94,14 @@ export class UsersService {
 
   async editProfile(userId: number, editProfileInput: EditProfileInput) {
     const user = await this.users.findOne(userId);
-    Object.keys(editProfileInput).forEach((key) => {
-      user[key] = editProfileInput[key];
-    });
+    if (editProfileInput.email) {
+      user.email = editProfileInput.email;
+      user.verified = false;
+      await this.verifications.save(this.verifications.create({ user }));
+    }
+    if (editProfileInput.password) {
+      user.password = editProfileInput.password;
+    }
     return this.users.save(user);
   }
 }
