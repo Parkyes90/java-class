@@ -55,7 +55,12 @@ export class UsersService {
   }
   async login({ email, password }: LoginInput): Promise<LoginOutput> {
     try {
-      const user = await this.users.findOne({ email });
+      const user = await this.users.findOne(
+        { email },
+        {
+          select: ['id', 'password'],
+        },
+      );
       const notValidOutput = {
         ok: false,
         error: '사용자 ID 혹은 비밀번호가 잘못됐습니다.',
@@ -106,15 +111,19 @@ export class UsersService {
   }
 
   async verifyEmail(code: string): Promise<boolean> {
-    const verification = await this.verifications.findOne(
-      { code },
-      { relations: ['user'] },
-    );
-    if (verification) {
-      verification.user.verified = true;
-      await this.users.save(verification.user);
-      return true;
+    try {
+      const verification = await this.verifications.findOne(
+        { code },
+        { relations: ['user'] },
+      );
+      if (verification) {
+        verification.user.verified = true;
+        await this.users.save(verification.user);
+        return true;
+      }
+      return false;
+    } catch (e) {
+      throw new Error(e);
     }
-    return false;
   }
 }
