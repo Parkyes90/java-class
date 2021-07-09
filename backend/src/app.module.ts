@@ -15,6 +15,7 @@ import { TokensModule } from './tokens/tokens.module';
 import { TokensMiddleware } from './tokens/tokens.middleware';
 import { AuthModule } from './auth/auth.module';
 import { Verification } from './users/entities/verification.entity';
+import { MailsModule } from './mails/mails.module';
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import { Verification } from './users/entities/verification.entity';
       privateKey: process.env.PRIVATE_KEY,
     }),
     AuthModule,
+    MailsModule,
   ],
   controllers: [],
   providers: [],
