@@ -32,6 +32,9 @@ import { MailsModule } from './mails/mails.module';
         PG_DATABASE: Joi.string().required(),
         PG_PASSWORD: Joi.string().required(),
         PRIVATE_KEY: Joi.string().required(),
+        MAILGUN_API_KEY: Joi.string().required(),
+        MAILGUN_DOMAIN_NAME: Joi.string().required(),
+        MAILGUN_FROM_EMAIL: Joi.string().required(),
       }),
     }),
     TypeOrmModule.forRoot({
@@ -53,6 +56,11 @@ import { MailsModule } from './mails/mails.module';
     CoreModule,
     TokensModule.forRoot({
       privateKey: process.env.PRIVATE_KEY,
+    }),
+    MailsModule.forRoot({
+      apiKey: process.env.MAILGUN_API_KEY,
+      fromEmail: process.env.MAILGUN_DOMAIN_NAME,
+      domain: process.env.MAILGUN_FROM_EMAIL,
     }),
     AuthModule,
     MailsModule,
