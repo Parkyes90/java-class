@@ -38,4 +38,11 @@ export class MailsService {
       throw new Error(e);
     }
   }
+
+  async sendVerificationEmail(email: string, code: string) {
+    await this.sendMail('Verify Your Email', 'confirm_mail', [
+      { key: 'username', value: email },
+      { key: 'code', value: code },
+    ]);
+  }
 }
