@@ -21,7 +21,7 @@ export class MailsService {
     form.append('subject', subject);
     form.append('template', template);
     emailVariables.forEach((emailVariable) =>
-      form.append(emailVariable.key, emailVariable.value),
+      form.append(`v:${emailVariable.key}`, emailVariable.value),
     );
 
     try {
